@@ -39,7 +39,7 @@ function Dashboard() {
                 {email: user.email},
                 { withCredentials: true }
             );
-            navigate("/verification", { state: { email } });
+            navigate("/verification", { state: { email:user.email } });
         } catch (error) {
             console.log(error);
             alert("Failed to send otp");

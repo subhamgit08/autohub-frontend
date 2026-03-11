@@ -60,6 +60,7 @@ function Login() {
                     onChange={(e) => setform({ ...form, password: e.target.value })}
                 />
                 
+
                 <input
                     type="text"
                     placeholder="Dealer Code"
@@ -75,6 +76,13 @@ function Login() {
                 >
                     Login
                 </button>
+
+                <p
+                    onClick={() => navigate("/forgot-password")}
+                    className="text-sm text-blue-600 cursor-pointer mb-4 hover:underline mt-5"
+                >
+                    Forgot Password?
+                </p>
 
                 <button
                     type="button"

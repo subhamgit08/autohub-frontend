@@ -30,7 +30,7 @@ const Verification = () => {
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/auth/send-otp`,
-                {},
+                { email: user.email },
                 { withCredentials: true }
             );
             setCooldown(30);

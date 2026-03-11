@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Verification = () => {
     const navigate = useNavigate();
+    const [cooldown, setCooldown] = useState(0);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const inputs = useRef([]);
 
@@ -25,6 +26,37 @@ const Verification = () => {
         }
     };
 
+    const handleResendOtp = async () => {
+        try {
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/auth/send-otp`,
+                {},
+                { withCredentials: true }
+            );
+            setCooldown(30);
+
+            const timer = setInterval(() => {
+                setCooldown((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            alert("OTP resent successfully");
+
+            // clear previous OTP
+            setOtp(["", "", "", "", "", ""]);
+            inputs.current[0].focus();
+
+        } catch (error) {
+            console.error(error);
+            alert("Failed to resend OTP");
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const otpValue = otp.join("");
@@ -39,7 +71,7 @@ const Verification = () => {
             const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/auth/verify-otp`,
                 { otp: otpValue },
-                { withCredentials: true } 
+                { withCredentials: true }
             );
 
             if (res.data.success) {
@@ -88,8 +120,11 @@ const Verification = () => {
 
                 <p className="text-sm text-gray-500 mt-4">
                     Didn't receive code?{" "}
-                    <span className="text-blue-600 cursor-pointer hover:underline">
-                        Resend
+                    <span
+                        onClick={cooldown === 0 ? handleResendOtp : null}
+                        className={`text-blue-600 hover:underline ${cooldown ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                    >
+                        {cooldown ? `Resend in ${cooldown}s` : "Resend"}
                     </span>
                 </p>
 

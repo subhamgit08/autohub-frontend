@@ -201,7 +201,7 @@ const Homepage = () => {
         </p>
 
         <a
-          href="https://github.com/yourusername/autohub"
+          href="https://github.com/subhamgit08/autohub"
           target="_blank"
           rel="noopener noreferrer"
           className="px-8 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition">

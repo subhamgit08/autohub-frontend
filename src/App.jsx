@@ -1,0 +1,24 @@
+import { Routes, Route } from "react-router-dom"
+import Login from "./pages/login"
+import Home from "./pages/homepage"
+import SignUp from "./pages/signup"
+import DashBoard from "./pages/dashboard"
+import Verification from "./pages/verification"
+
+function App() {
+  return (
+    <>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/verification" element={<Verification />} />
+        </Routes>
+      </div>
+    </>
+  )
+}
+
+export default App

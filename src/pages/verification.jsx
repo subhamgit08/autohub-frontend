@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Verification = () => {
@@ -7,6 +7,9 @@ const Verification = () => {
     const [cooldown, setCooldown] = useState(0);
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const inputs = useRef([]);
+
+    const location = useLocation();
+    const email = location.state?.email;
 
     const handleChange = (value, index) => {
         if (!/^[0-9]?$/.test(value)) return;
@@ -30,7 +33,7 @@ const Verification = () => {
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/auth/send-otp`,
-                { email: user.email },
+                { email },
                 { withCredentials: true }
             );
             setCooldown(30);

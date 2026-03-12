@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -8,14 +8,25 @@ function ResetPassword() {
     const location = useLocation();
 
     const email = location.state?.email;
+    const receivedOtp = location.state?.receivedOtp;
 
     const [otp, setOtp] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        if (receivedOtp) {
+            alert(`(Test Mode) Your Reset OTP is: ${receivedOtp}`);
+        }
+    }, [receivedOtp]);
 
     const handleReset = async (e) => {
 
         e.preventDefault();
 
+        if (!otp || !password) {
+            alert("Please fill in all fields");
+            return;
+        }
         try {
 
             const res = await axios.post(

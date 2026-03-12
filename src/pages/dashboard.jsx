@@ -33,13 +33,34 @@ function Dashboard() {
         fetchUser();
     }, [])
 
+    // const handleVerify = async () => {
+    //     try {
+    //         await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`, 
+    //             {email: user.email},
+    //             { withCredentials: true }
+    //         );
+    //         navigate("/verification", { state: { email:user.email } });
+    //     } catch (error) {
+    //         console.log(error);
+    //         alert("Failed to send otp");
+    //     }
+    // }
+
+    // Inside handleVerify in Dashboard.jsx
     const handleVerify = async () => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`, 
-                {email: user.email},
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/send-otp`,
+                { email: user.email },
                 { withCredentials: true }
             );
-            navigate("/verification", { state: { email:user.email } });
+
+            // Pass the OTP from the response to the verification page state
+            navigate("/verification", {
+                state: {
+                    email: user.email,
+                    receivedOtp: response.data.otp // Pass the OTP here
+                }
+            });
         } catch (error) {
             console.log(error);
             alert("Failed to send otp");

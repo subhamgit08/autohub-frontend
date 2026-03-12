@@ -12,14 +12,17 @@ function ForgotPassword() {
         e.preventDefault();
 
         try {
-            await axios.post(
+            const response = await axios.post(
                 `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
                 { email }
             );
 
-            alert("Password reset OTP sent to email");
+            // alert("Password reset OTP sent to email");
 
-            navigate("/reset-password", { state: { email } });
+            navigate("/reset-password", { state: { 
+                email,
+                receivedOtp: response.data.otp
+            } });
 
         } catch (error) {
             alert("Failed to send OTP");

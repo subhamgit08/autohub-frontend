@@ -10,6 +10,13 @@ const Verification = () => {
 
     const location = useLocation();
     const email = location.state?.email;
+    const receivedOtp = location.state?.receivedOtp; // Get the OTP from state
+
+    useEffect(() => {
+        if (receivedOtp) {
+            alert(`(Test Mode) Your OTP is: ${receivedOtp}`);
+        }
+    }, [receivedOtp]);
 
     const handleChange = (value, index) => {
         if (!/^[0-9]?$/.test(value)) return;
@@ -36,6 +43,10 @@ const Verification = () => {
                 { email },
                 { withCredentials: true }
             );
+
+            if (res.data.otp) {
+                alert(`(Test Mode) New OTP is: ${res.data.otp}`);
+            }
             setCooldown(30);
 
             const timer = setInterval(() => {

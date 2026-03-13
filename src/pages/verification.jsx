@@ -10,7 +10,7 @@ const Verification = () => {
 
     const location = useLocation();
     const email = location.state?.email;
-    const receivedOtp = location.state?.receivedOtp; // Get the OTP from state
+    const receivedOtp = location.state?.receivedOtp; // Get the OTP 
 
     useEffect(() => {
         if (receivedOtp) {

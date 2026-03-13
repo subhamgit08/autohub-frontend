@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 function Signup() {
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -11,8 +12,45 @@ function Signup() {
         dealerCode: "",
     })
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+
+    //     const submitData = {
+    //         ...form,
+    //         dealerCode: form.isDealer ? form.dealerCode : ""
+    //     }
+
+    //     try {
+    //         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify(submitData),
+    //         })
+
+    //         const data = await response.json()
+
+    //         if (response.ok) {
+    //             alert("Signup successful!")
+    //             navigate("/login")
+    //         } else {
+    //             alert(data.message)
+    //         }
+
+    //     } catch (error) {
+    //         console.log(error)
+    //         alert("Server error")
+    //     }
+    // }
+
+
     const handleSubmit = async (e) => {
+
         e.preventDefault()
+
+        if (loading) return
+        setLoading(true)
 
         const submitData = {
             ...form,
@@ -20,6 +58,7 @@ function Signup() {
         }
 
         try {
+
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
                 method: "POST",
                 headers: {
@@ -40,6 +79,8 @@ function Signup() {
         } catch (error) {
             console.log(error)
             alert("Server error")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -110,16 +151,54 @@ function Signup() {
                     />
                 )}
 
-                <button
+                {/* <button
                     type="submit"
                     className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition cursor-pointer"
                 >
                     Create Account
+                </button> */}
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full py-2 rounded-lg flex items-center justify-center gap-2
+    ${loading
+                            ? "bg-gray-500 cursor-not-allowed text-white"
+                            : "bg-black text-white hover:bg-gray-800"}`
+                    }
+                >
+
+                    {loading && (
+                        <svg
+                            className="animate-spin h-4 w-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="white"
+                                strokeWidth="4"
+                            ></circle>
+
+                            <path
+                                className="opacity-75"
+                                fill="white"
+                                d="M4 12a8 8 0 018-8v8H4z"
+                            ></path>
+                        </svg>
+                    )}
+
+                    {loading ? "Creating..." : "Create Account"}
+
                 </button>
 
                 <button
                     type="button"
-                    onClick={()=>navigate("/login")}    
+                    onClick={() => navigate("/login")}
                     className="text-blue-700 cursor-pointer mt-2"
                 >
                     Already have an account? Login
